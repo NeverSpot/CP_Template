@@ -1,11 +1,14 @@
 /* "If I can run I will run , If I can walk I will walk , If I can crawl I will crawl" */
 /*                           " But I will NEVER_STOP "                                 */
 #include <bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
 using namespace std;
+using namespace __gnu_pbds;
 #define Code ios_base::sync_with_stdio(false);
 #define By cin.tie(NULL);
 #define NeverSpot cout.tie(NULL);
-#define int long long int
+#define int long long
 #define double long double
 #define f first
 #define s second
@@ -20,22 +23,29 @@ using namespace std;
 #define v(x) cout << #x << "=" << x ed;
 #define v2(x, y) cout << #x << "=" << x << "," << #y << "=" << y ed;
 #define all(x) (x).begin(),(x).end()
-#define sz(x) ((int)(x).size())
+#define len(x) ((int)(x).size())
 #define fl(a,b) for (int i=a;i<(b);++i)
+#define rfl(a,b) for (int i=a;i>=(b);--i)
 #define sl(a,b) for (int j=a;j<(b);++j)
+#define rsl(a,b) for (int j=a;j>=(b);--j)
 #define tl(a,b) for (int k=a;k<(b);++k)
-#define test(t) int t;ci t;while ((t)--)
+#define rtl(a,b) for (int k=a;k>=(b);--k)
+#define test(t) int t;int T=0;ci t;while (++T<=t)
 #define sortv(v) sort(all(v));
 #define rev(v) reverse(all(v));
-#define print(arr) for(auto x:arr){co x sped;} cout ed
 #define ai(x) vi x;fl(0,n){int y ; ci y ; (x).pu(y);}
 #define pi 3.14159265358979
 #define no co "NO" ed
 #define yes co "YES" ed
 #define pq priority_queue <int, vector<int>, greater<int> >
-const int mod = 1e9 + 7;
-#define mod1 998244353
-#define INF 1e18
+const int M = 1e9 + 7;
+#define M2 998244353
+const int inf=1e18+100;
+#define gcd __gcd
+long long Sqrt(long long x){ long long y=(int)sqrt(x)+5;while(y*y>x)y--;return y;}
+#define to_lowercase(s) transform(s.begin(), s.end(), s.begin(), ::tolower)
+#define to_uppercase(s) transform(s.begin(), s.end(), s.begin(), ::toupper)
+#define point(a) co setprecision((int)a) << fixed;
 const int N = 1e6+10;
 typedef map<int,int> ma;
 typedef vector<int> vi;
@@ -48,37 +58,47 @@ typedef vector<vector<int>> vvi;
 typedef vector<vector<pair<int,int>>> vvp;
 typedef pair<int, int> pl;
 typedef vector<pair<int, int>> vp;
-void precision(int a){co setprecision(a) << fixed;}
+typedef priority_queue<int> pqmax;
+typedef priority_queue<int,vi,greater<int>> pqmin;
+#define CeilDiv(a,b) ((a+b-1)/b)
+//typedef tree<int, null_type, less<>, rb_tree_tag, tree_order_statistics_node_update> order_set; // find_by_order, order_of_key
+//typedef tree<int, null_type, less_equal<>, rb_tree_tag, tree_order_statistics_node_update> order_multiset; // find_by_order, order_of_key
 char al[26]={'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
 //.........For Taking Mod............//
-int expo(int a, int b, int mod) {int res = 1; while (b > 0) {if (b & 1)res = (res * a) % mod; a = (a * a) % mod; b = b >> 1;} return res;}
-int mminvprime(int a, int b) {return expo(a, b - 2, b);}
+int power(int a, int b, int mod=inf) {int res = 1; while (b > 0) {if (b & 1)res = (res * a) % mod; a = (a * a) % mod; b = b >> 1;} return res;}
+int mminvprime(int a, int b) {return power(a, b - 2, b);}
 int mod_add(int a, int b, int m) {a = a % m; b = b % m; return (((a + b) % m) + m) % m;}
 int mod_mul(int a, int b, int m) {a = a % m; b = b % m; return (((a * b) % m) + m) % m;}
 int mod_sub(int a, int b, int m) {a = a % m; b = b % m; return (((a - b) % m) + m) % m;}
 int mod_div(int a, int b, int m) {a = a % m; b = b % m; return (mod_mul(a, mminvprime(b, m), m) + m) % m;}  //only for prime m
 //.........Bit_Manipulation...........//
-#define msb(mask) 63-__builtin_clzll(mask)  /// 0 -> -1
+#define msb(mask) (63-__builtin_clzll(mask))  /// 0 -> -1
 #define lsb(mask) __builtin_ctzll(mask)  /// 0 -> 64
 #define cntsetbit(mask) __builtin_popcountll(mask)
-#define check(mask,bit) (mask&(1LL<<bit))
-#define onbit(mask,bit) (mask|(1LL<<bit))
-#define offbit(mask,bit) (mask&~(1LL<<bit))
-#define changebit(mask,bit) (mask^(1LL<<bit))
+#define checkbit(mask,bit) ((mask)&(1LL<<(bit)))
+#define onbit(mask,bit) ((mask)|(1LL<<(bit)))
+#define offbit(mask,bit) ((mask)&~(1LL<<(bit)))
+#define changebit(mask,bit) ((mask)^(1LL<<bit))
 // Function
-bool isPrime(int v){if(v<=1||v%2==0 || v%3==0)return false;if(v<=3)return true;int i=5;while(i*i<=v){if(v%i==0 || v%(i+2)==0)return false;i+=6;}return true;}
-void printbin(int v,int upto=10){for(int i=upto;i>=0;i--){co ((v>>i)&1) sped}cout ed}
-// Global Variables
-string str;
+#define print(arr) for(auto &x:(arr)){co x sped;} cout ed
+bool isPrime(int v) {if (v <= 3)return true;if ( v % 2 == 0 || v % 3 == 0)return false;int i = 5;while (i * i <= v) {if (v % i == 0 || v % (i + 2) == 0)return false;i += 6;}return true;}
+bool isSorted(vi &arr) {for (int i = 0; i < arr.size() - 1; ++i) {if (arr[i] > arr[i + 1])return false;}return true;}
+void printbin(int v,int upto=10) {co v<<"-> ";for (int i = upto; i >= 0; --i) {co ((v >> i) & 1) sped}cout ed}
+double dis(int x1, int y1, int x2, int y2) {return sqrt(power(x1-x2, 2) + power(y1-y2, 2));}
 // Free to use :}
 
 void solve() {
-    int n,k,m,d;
-
+    // Global Variables
+    int n, m, k, d;
+    string str;
+    //------------------------------RISHU------------------------------//
+    
 }
+
 signed main() {
     Code By NeverSpot
     test(t){
+//          cout << "Case #" << T << ": ";
         solve();
     }
     return 0;
