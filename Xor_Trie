@@ -1,0 +1,98 @@
+struct Node {
+    Node *links[2];
+    int link_cnt[2] = {0, 0};
+
+    bool hai_ya_ni(int bit) {
+        return (links[bit] != NULL);
+    }
+
+    Node *get(int bit) {
+        return links[bit];
+    }
+
+    void put(int bit, Node *node) {
+        links[bit] = node;
+    }
+};
+
+class Trie {
+    int B = 31;
+public:
+    Node *root;
+
+    Trie(int b = 31) {
+        root = new Node();
+        B = b;
+    }
+
+public:
+    void insert(int num) {
+        Node *ptr = root;
+        for (int b = B; b >= 0; b--) {
+            int want = checkbit(num, b);
+            if (!(ptr->hai_ya_ni(want))) {
+                ptr->put(want, new Node());
+            }
+            ptr->link_cnt[want]++;
+            ptr = ptr->get(want);
+        }
+    }
+
+public :
+    void clear(Node *ptr) {
+        if (ptr == NULL)return;
+        clear(ptr->links[0]);
+        clear(ptr->links[1]);
+        delete ptr;
+    }
+
+    void del(int num) {
+        Node *ptr = root;
+        int last_want = 0;
+        for (int b = B; b >= 0; b--) {
+            int want = checkbit(num, b);
+            ptr->link_cnt[want]--;
+            if (ptr->link_cnt[want] == 0) {
+                clear(ptr->get(want));
+                ptr->links[want] = NULL;
+                return;
+            }
+            ptr = ptr->get(want);
+        }
+    }
+
+public:
+    int getMax(int num) {
+        Node *ptr = root;
+        int ans = 0;
+        for (int b = B; b >= 0; b--) {
+            int want = 1 - (checkbit(num, b));
+            if (ptr->hai_ya_ni(want)) {
+                ans += (1 << b);
+                ptr = ptr->get(want);
+            } else if (ptr->hai_ya_ni(checkbit(num, b))) {
+                ptr = ptr->get(checkbit(num, b));
+            } else {
+                return 0;
+            }
+        }
+        return ans;
+    }
+
+    int get_min(int num) {
+        Node *ptr = root;
+        int ans = 0;
+        for (int b = B; b >= 0; b--) {
+            int want = checkbit(num, b);
+            if (ptr->hai_ya_ni(want)) {
+                ans += (1 << b);
+                ptr = ptr->get(want);
+            } else if (ptr->hai_ya_ni(checkbit(num, b))) {
+                ptr = ptr->get(checkbit(num, b));
+            } else {
+                return 0;
+            }
+        }
+        return ans;
+    }
+};
